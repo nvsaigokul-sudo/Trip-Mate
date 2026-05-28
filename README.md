@@ -1,443 +1,139 @@
-# TripMate – AI Powered Smart Travel Planner
+# TripMate – AI-Powered Smart Travel Planner
 
-## Overview
+TripMate is a premium, production-ready Android travel planner application built with Kotlin and Jetpack Compose. It is designed to assist travelers in generating dynamic, day-wise itineraries, navigating destinations using free offline-friendly maps, tracking travel budgets and expenses, maintaining a personal travel journal, and receiving live weather insights—all integrated with Google's Gemini AI.
 
-TripMate is a modern Android travel planner application developed using Kotlin and Jetpack Compose. The application is designed to help users plan trips, manage travel activities, save destinations, track expenses, and receive AI-powered travel recommendations through Gemini API integration.
-
-The project focuses heavily on premium UI/UX, offline-first functionality, clean architecture, and modern Android development practices. Instead of relying on paid Google Maps APIs, the project uses OpenStreetMap with OSMDroid to provide free and efficient map functionality.
-
-TripMate is built as a scalable, production-style Android application suitable for:
-- Portfolio projects
-- Final-year projects
-- Internship showcases
-- Android development learning
-- Modern app architecture demonstrations
+The codebase adheres strictly to **MVVM Clean Architecture**, offline-first principles, and modern Android development practices.
 
 ---
 
-# Features
+## Key Features
 
-## AI Travel Assistant
+### 🤖 AI Travel Assistant
+* Powered by the **Google Gemini API** (`gemini-flash-latest`).
+* Generates structured, day-wise travel plans based on custom user prompts (e.g., duration, budget, target destination).
+* Provides smart recommendations for attractions, dining, and scenic views based on budget.
+* Configured in [GenerativeAIService.kt](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/data/remote/GenerativeAIService.kt).
 
-TripMate includes an AI-powered travel assistant using Gemini API.
+### 🗺️ Interactive & Offline-Friendly Maps
+* Employs **OpenStreetMap** with **OSMDroid** for free, high-performance mapping.
+* Avoids paid Google Maps API billing.
+* Supports displaying the traveler's current location, custom destination markers, interactive zoom, and favorite locations.
+* Map logic is implemented in [OsmMapView.kt](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/ui/map/OsmMapView.kt) and rendered on the [NavigationScreen.kt](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/ui/map/NavigationScreen.kt).
 
-Users can:
-- Generate trip plans
-- Ask travel-related questions
-- Get destination suggestions
-- Receive budget travel recommendations
-- Create day-wise itineraries
-- Get travel tips and summaries
+### 📅 Smart Trip Planner
+* Facilitates structured travel organizing.
+* Users can view generated trips, browse day-wise plans, and check location-specific schedules.
+* Features localized storage of itinerary days in Room Database.
 
-### Example Prompts
+### 💰 Travel Expense Tracker
+* Locally logs travel costs with categorization (Food, Transport, Lodging, Shopping, Miscellaneous).
+* Highlights budget analytics, expense indicators, and statistics to keep trips cost-efficient.
 
-Suggest a 3-day Goa trip under ₹10,000
+### ✍️ Travel Journal
+* A digital diary for logging notes, thoughts, and trip memories.
+* Securely persisted offline using Room DB.
 
-Best places to visit in Kerala during winter
-
-Create a budget-friendly trip plan for Jaipur
-
----
-
-# Interactive Maps
-
-The project uses:
-- OpenStreetMap
-- OSMDroid
-
-### Features
-- Current location display
-- Map interaction
-- Zoom controls
-- Destination markers
-- Favorite place saving
-- Offline-friendly behavior
-
-No paid Google Maps APIs are used.
+### ☀️ Weather Insights
+* Integrates with the **OpenWeather API** to fetch real-time forecasts.
+* Shows temperature, wind speed, humidity, and rainfall forecasts to ensure travelers plan appropriately.
 
 ---
 
-# Smart Trip Planner
+## Project Tech Stack
 
-Users can:
-- Create trips
-- Add destinations
-- Organize itineraries
-- Manage schedules
-- Save travel plans
-
-The planner supports structured day-wise travel planning.
-
----
-
-# Expense Tracker
-
-The application includes an expense management system where users can track:
-- Food expenses
-- Hotel expenses
-- Transport expenses
-- Shopping costs
-- Miscellaneous travel expenses
-
-### Features
-- Expense analytics
-- Budget tracking
-- Statistics cards
-- Expense summaries
+| Component | Technology | Description |
+|---|---|---|
+| **Language** | Kotlin | Modern, expressive, and safe language for Android. |
+| **UI Framework** | Jetpack Compose | Declarative UI toolkit with Material 3 styling. |
+| **Architecture** | MVVM + Clean Architecture | Separates concerns cleanly between UI, Business Logic, and Data. |
+| **Local Database** | Room Database | Offline-first SQL wrapper supporting foreign keys and cascade deletes. |
+| **Networking** | Retrofit | Type-safe HTTP client for Weather API communications. |
+| **Image Loading** | Coil Compose | Lightweight image loading library for Compose. |
+| **Map Rendering** | OSMDroid | Open-source library for interacting with OpenStreetMap tiles. |
+| **AI Integration** | Google Generative AI | Gemini Android SDK. |
 
 ---
 
-# Travel Journal
+## Architectural Flow
 
-Users can:
-- Write notes
-- Save memories
-- Manage trip details
-- Store travel-related information
+The application follows an offline-first architecture pattern:
 
----
+```
+    [ Jetpack Compose UI Screens ] 
+                 │
+                 ▼
+          [ ViewModels ] (Manages State and Actions)
+                 │
+                 ▼
+       [ Repository Layer ] (Single source of truth)
+          ╱          ╲
+         ▼            ▼
+   [ Room DB ]   [ Remote APIs ]
+  (Offline Data) (Gemini / Weather API)
+```
 
-# Favorite Places
-
-Users can save:
-- Favorite destinations
-- Important locations
-- Frequently visited places
-
-All saved locally using Room Database.
-
----
-
-# Weather Information
-
-TripMate integrates weather information using OpenWeather API.
-
-### Features
-- Current temperature
-- Weather conditions
-- Humidity
-- Rain forecast
-- Wind information
-
----
-
-# Notifications & Reminders
-
-TripMate includes reminder functionality for:
-- Upcoming trips
-- Expense reminders
-- Important travel events
-- Itinerary notifications
+### Main Directories & Packages
+* **`data/`**: Core data models, API clients, local database configuration, and repositories.
+  * [local/](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/data/local): Room Entities, DAOs, and the database class.
+  * [remote/](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/data/remote): Retrofit endpoints and the Gemini API Service.
+  * [repository/](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/data/repository): Repositories orchestrating networking and DB storage.
+* **`navigation/`**: Manages app screen routing definitions.
+  * See [Screen.kt](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/navigation/Screen.kt).
+* **`ui/`**: Jetpack Compose presentation layer.
+  * [home/](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/ui/home): Home dashboard screen and state.
+  * [timeline/](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/ui/timeline): Itinerary details screen.
+  * [map/](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/ui/map): OSM mapping screens and views.
+  * [splash/](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/java/com/tripmate/ai/ui/splash): Startup logo entry screen.
 
 ---
 
-# Offline Support
+## App Screens Detailed
 
-The project follows an offline-first architecture.
-
-Using Room Database, users can access:
-- Saved trips
-- Expense data
-- Journals
-- Favorite places
-- Itineraries
-
-without internet connectivity.
+1. **Splash Screen**: Initiates loading sequences and transitions into the Dashboard.
+2. **Onboarding Screen**: Features app introductions and walks users through initial setup.
+3. **Home Dashboard**: Displays quick navigation, recent/upcoming trips, climate status, and the AI prompt input box.
+4. **Interactive Timeline Screen**: Displays day-by-day itineraries, place detail cards, and navigation buttons.
+5. **Maps Screen**: Displays place routes, user geolocation pins, and custom landmarks.
+6. **Expense Tracker Screen**: Log expenses, show category aggregations, and compute remaining budget stats.
+7. **Journal Screen**: View and write notes regarding completed trips.
+8. **Favorites Screen**: Highlights starred locations and bookmark views.
 
 ---
 
-# Technologies Used
+## Setup & Running the Application
 
-| Technology | Purpose |
-|---|---|
-| Kotlin | Main programming language |
-| Jetpack Compose | Modern UI toolkit |
-| MVVM Architecture | Clean project structure |
-| Room Database | Offline local storage |
-| Retrofit | API communication |
-| Hilt | Dependency Injection |
-| Coroutines | Background processing |
-| Gemini API | AI features |
-| OSMDroid | Map integration |
-| OpenStreetMap | Free map provider |
-| OpenWeather API | Weather system |
-| Navigation Compose | Screen navigation |
-| Coil | Image loading |
-| Material 3 | Modern UI components |
+### 1. Prerequisites
+Ensure you have the latest version of **Android Studio (Ladybug or newer)** installed.
 
----
+### 2. Configure API Keys
+To protect sensitive credentials, API keys are loaded via the project's local Gradle properties and injected into `BuildConfig`.
+1. Create a `local.properties` file in the root folder of the project.
+2. Add your Google Gemini and OpenWeather keys:
+   ```properties
+   GEMINI_API_KEY=your_gemini_api_key_here
+   OPENWEATHER_API_KEY=your_openweather_api_key_here
+   ```
 
-# Architecture
-
-TripMate follows MVVM Clean Architecture.
-
-## Architecture Flow
-
-UI (Compose Screens)
-↓
-ViewModel
-↓
-Repository Layer
-↙ ↘
-Room DB APIs
+### 3. Build and Run
+1. Open Android Studio and select **Open Project**, selecting the root `Trip-Mate` directory.
+2. Allow Gradle Sync to download dependencies.
+3. Choose a device (physical phone or Android emulator) and click the **Run** button or execute:
+   ```bash
+   ./gradlew installDebug
+   ```
 
 ---
 
-# Project Structure
+## Permissions Setup
 
-app/
-├── data/
-│    ├── local/
-│    ├── remote/
-│    └── repository/
-│
-├── domain/
-│    ├── model/
-│    ├── repository/
-│    └── usecase/
-│
-├── presentation/
-│    ├── screens/
-│    ├── components/
-│    ├── navigation/
-│    ├── viewmodel/
-│    └── theme/
-│
-├── di/
-├── utils/
-└── MainActivity.kt
+The application requests the following permissions in [AndroidManifest.xml](file:///c:/Users/nvsai/Desktop/anti%20gravity%20project/Trip-Mate/app/src/main/AndroidManifest.xml):
+* `android.permission.INTERNET`: Used for map download, weather, and AI queries.
+* `android.permission.ACCESS_FINE_LOCATION` & `android.permission.ACCESS_COARSE_LOCATION`: Used to display the user's current position on the map.
+* `android.permission.POST_NOTIFICATIONS`: Prompts itinerary notifications and expense entry reminders.
 
 ---
 
-# UI/UX Highlights
-
-TripMate focuses heavily on premium frontend design.
-
-## UI Features
-- Material 3 Design
-- Dark Mode Support
-- Responsive Layouts
-- Modern Dashboard
-- Smooth Animations
-- Animated Navigation
-- Startup-style Interface
-- Elegant Cards & Components
-- Modern Typography
-- Premium Color Palette
-- Animated Loading States
-- Clean User Experience
-
----
-
-# Screens Included
-
-## Splash Screen
-Animated app launch screen.
-
-## Onboarding Screens
-App introduction and feature walkthrough.
-
-## Home Dashboard
-Displays:
-- Greeting section
-- Quick actions
-- Upcoming trips
-- Weather widget
-- AI suggestions
-
-## Maps Screen
-Interactive map interface with location support.
-
-## Trip Planner Screen
-Manage trips and itineraries.
-
-## AI Assistant Screen
-Chat-style AI travel assistant powered by Gemini API.
-
-## Expense Tracker Screen
-Track and manage travel expenses.
-
-## Journal Screen
-Store travel notes and memories.
-
-## Favorites Screen
-Manage favorite destinations and places.
-
-## Profile & Settings
-User preferences and app settings.
-
----
-
-# APIs Used
-
-## Gemini API
-Used for:
-- AI recommendations
-- Travel planning
-- Budget suggestions
-- Smart itinerary generation
-
-## OpenWeather API
-Used for:
-- Weather information
-- Forecasts
-- Climate details
-
-## OpenStreetMap + OSMDroid
-Used for:
-- Free map integration
-- Location display
-- Marker management
-
----
-
-# Permissions Used
-
-<uses-permission android:name="android.permission.INTERNET"/>
-
-<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-
-<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
-<uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
----
-
-# Setup Instructions
-
-## 1. Clone Repository
-
-git clone <repository-url>
-
----
-
-## 2. Open in Android Studio
-
-Open the project using the latest version of Android Studio.
-
----
-
-## 3. Add API Keys
-
-Create a local.properties file and add:
-
-GEMINI_API_KEY=YOUR_API_KEY
-
-OPENWEATHER_API_KEY=YOUR_API_KEY
-
----
-
-## 4. Sync Gradle
-
-Allow Android Studio to download dependencies.
-
----
-
-## 5. Run Application
-
-Run the application on:
-- Emulator
-- Physical Android device
-
----
-
-# Dependencies
-
-implementation("androidx.compose.ui:ui")
-
-implementation("androidx.navigation:navigation-compose")
-
-implementation("androidx.lifecycle:lifecycle-viewmodel-compose")
-
-implementation("androidx.room:room-runtime")
-
-implementation("com.google.dagger:hilt-android")
-
-implementation("com.squareup.retrofit2:retrofit")
-
-implementation("org.osmdroid:osmdroid-android")
-
-implementation("io.coil-kt:coil-compose")
-
----
-
-# Security Practices
-
-TripMate follows security best practices:
-- API keys are not hardcoded
-- Keys stored securely using local.properties
-- Offline storage protection
-- Proper permission handling
-- Secure networking practices
-
----
-
-# Performance Optimizations
-
-The project includes:
-- Coroutines for async tasks
-- Efficient state management
-- Lazy loading components
-- Optimized Compose recompositions
-- Efficient Room database operations
-
----
-
-# Future Improvements
-
-Possible future enhancements:
-- Route navigation
-- Real-time directions
-- Cloud synchronization
-- Social travel sharing
-- Multi-user trip planning
-- Hotel booking integration
-- Voice assistant
-- AI image generation
-- Smart travel analytics
-
----
-
-# Learning Outcomes
-
-This project demonstrates:
-- Modern Android Development
-- Kotlin Programming
-- Jetpack Compose UI Development
-- MVVM Clean Architecture
-- API Integration
-- Offline-first Architecture
-- AI Integration in Android
-- Map Integration
-- Room Database Usage
-- Modern UI/UX Design
-- Dependency Injection
-- Scalable Project Structure
-
----
-
-# Why TripMate Stands Out
-
-TripMate is not a basic student CRUD application.
-
-The project focuses on:
-- real-world functionality
-- startup-style frontend
-- AI integration
-- clean architecture
-- modern Android standards
-- premium user experience
-
-It is designed to look and feel like a real production-ready Play Store application.
-
----
-
-# Author
-
-Developed as a modern Android application project using Kotlin, Jetpack Compose, AI integration, and free/open-source technologies.
-
----
-
-# License
-
-This project is intended for educational, portfolio, and learning purposes.
+## Security & Best Practices
+* **No hardcoded credentials**: API Keys are read strictly from `local.properties` (which is excluded from Git) and compiled safely into `BuildConfig`.
+* **Asynchronous processing**: Network and Room DB requests are handled via Kotlin Coroutines on `Dispatchers.IO` to ensure smooth UI performance.
+* **Cascade Deletion**: Database integrity is maintained using SQL foreign keys, so removing a trip automatically cleans up associated itinerary days, places, and records.
